@@ -57,11 +57,11 @@ void *people_producer_thread(void* pd_ptr)
 
         // accept / reject
         pthread_mutex_lock(pd->mutex);
+        int rejected = (int) fmax(0, *pd->queue + arrivals - MAX_WAIT_PEOPLE);
+
         *pd->queue = (int) fmin(MAX_WAIT_PEOPLE, *pd->queue + arrivals);
 
         // printf("q: %d\n", *pd->queue);
-
-        int rejected = (int) fmax(0, *pd->queue + arrivals - MAX_WAIT_PEOPLE);
 
         // write to log
         fprintf(
